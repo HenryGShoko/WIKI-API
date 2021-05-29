@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
+const { request } = require("express");
 
 const app = express();
 
@@ -29,6 +30,21 @@ Article.find((err, foundArticles) =>{
         res.send(err)
     }
 })
+})
+
+app.post('/articles', (req, res) => {
+
+    const newArticle = new Article({
+        title: req.body.title,
+        content: req.body.content
+    })
+    newArticle.save((err) => {
+        if(!err){
+            res.send('Successfully added a new article')
+        }else{
+            res.send(err)
+        }
+    })
 })
 
 app.listen(3000, function() {
